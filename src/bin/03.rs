@@ -19,13 +19,22 @@ fn contains_number(input: &str) -> bool {
     input.contains(|ch: char| ch.is_ascii_digit())
 }
 
-fn expand_index(mut start_pos: usize, input: &str) -> u32{
-    let mut end_pos = start_pos + 1; 
-    while input[start_pos..end_pos+1].as_bytes().iter().all(|a| a.is_ascii_digit()){
-        end_pos +=1;
+fn expand_index(mut start_pos: usize, input: &str) -> u32 {
+    let mut end_pos = start_pos + 1;
+    while input[start_pos..end_pos + 1]
+        .as_bytes()
+        .iter()
+        .all(|a| a.is_ascii_digit())
+    {
+        end_pos += 1;
     }
-    while start_pos > 0 && input[start_pos-1..end_pos].as_bytes().iter().all(|a| a.is_ascii_digit()){
-        start_pos-=1;
+    while start_pos > 0
+        && input[start_pos - 1..end_pos]
+            .as_bytes()
+            .iter()
+            .all(|a| a.is_ascii_digit())
+    {
+        start_pos -= 1;
     }
     input[start_pos..end_pos].parse::<u32>().unwrap()
 }
@@ -99,16 +108,16 @@ fn part2(input: &str) -> u32 {
         if number_before as u8 + number_above as u8 + number_after as u8 + number_below as u8 > 2 {
             continue;
         }
-        
+
         // dbg!(i / WIDTH+ 1, i % WIDTH +1);
 
         if number_before {
             numbers_surrounding += 1;
-            temp_result *= expand_index(i-1, input)
+            temp_result *= expand_index(i - 1, input)
         }
         if number_after {
             numbers_surrounding += 1;
-            temp_result *= expand_index(i+1, input)
+            temp_result *= expand_index(i + 1, input)
         }
         if numbers_surrounding < 2 && number_above {
             if input[i - WIDTH..i - WIDTH + 1].contains('.')
@@ -119,12 +128,17 @@ fn part2(input: &str) -> u32 {
                     == 2
             {
                 numbers_surrounding += 2;
-                temp_result *= expand_index(i-WIDTH-1, input) * expand_index(i-WIDTH+1, input)
+                temp_result *=
+                    expand_index(i - WIDTH - 1, input) * expand_index(i - WIDTH + 1, input)
             } else {
                 numbers_surrounding += 1;
                 // From left to right
-                let mut start_pos = i - WIDTH -1;
-                start_pos += input[start_pos..start_pos+3].as_bytes().iter().position(|a | a.is_ascii_digit()).unwrap() ;
+                let mut start_pos = i - WIDTH - 1;
+                start_pos += input[start_pos..start_pos + 3]
+                    .as_bytes()
+                    .iter()
+                    .position(|a| a.is_ascii_digit())
+                    .unwrap();
                 temp_result *= expand_index(start_pos, input)
             }
         }
@@ -136,17 +150,20 @@ fn part2(input: &str) -> u32 {
                     .count()
                     == 2
             {
-                // Same comment as above, case not present in data
                 numbers_surrounding += 2;
-                temp_result *= expand_index(i+WIDTH-1, input) * expand_index(i+WIDTH+1, input)
+                temp_result *=
+                    expand_index(i + WIDTH - 1, input) * expand_index(i + WIDTH + 1, input)
             } else {
                 numbers_surrounding += 1;
                 // From left to right
-                let mut start_pos = i + WIDTH -1;
-                start_pos += input[start_pos..start_pos+3].as_bytes().iter().position(|a | a.is_ascii_digit()).unwrap();
-                
-                temp_result *= expand_index(start_pos, input);
+                let mut start_pos = i + WIDTH - 1;
+                start_pos += input[start_pos..start_pos + 3]
+                    .as_bytes()
+                    .iter()
+                    .position(|a| a.is_ascii_digit())
+                    .unwrap();
 
+                temp_result *= expand_index(start_pos, input);
             }
         }
 

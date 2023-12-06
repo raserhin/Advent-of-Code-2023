@@ -25,8 +25,8 @@ pub fn main(args: TokenStream, _input: TokenStream) -> TokenStream {
       let now = ::std::time::Instant::now();
       let p2 = part2(INPUT);
       let elapsed_p2 = now.elapsed();
-      println!("Part one: {:>5} Time: {:>5}μs", p1, elapsed_p1.as_micros());
-      println!("Part two: {:>5} Time: {:>5}μs", p2, elapsed_p2.as_micros());
+      println!("Part one: {:>9} Time: {:>5}μs", p1, elapsed_p1.as_micros());
+      println!("Part two: {:>9} Time: {:>5}μs", p2, elapsed_p2.as_micros());
       
     }
   };

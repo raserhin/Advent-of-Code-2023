@@ -1,7 +1,6 @@
-
 ///
 ///  Day 02
-/// 
+///
 const R: u32 = 12;
 const G: u32 = 13;
 const B: u32 = 14;
@@ -26,10 +25,10 @@ fn part1(input: &str) -> u32 {
                 let mut it = pair.split_ascii_whitespace();
                 let num: u32 = it.next().unwrap().parse().unwrap();
                 let color: &str = it.next().unwrap();
-                match color {
-                    "red" => r += num,
-                    "green" => g += num,
-                    "blue" => b += num,
+                match color.as_bytes()[0] {
+                    b'r' => r += num,
+                    b'g' => g += num,
+                    b'b' => b += num,
                     _ => panic!("No color"),
                 }
             });
@@ -60,10 +59,10 @@ fn part2(input: &str) -> u32 {
                 let mut it = pair.split_ascii_whitespace();
                 let num: u32 = it.next().unwrap().parse().unwrap();
                 let color: &str = it.next().unwrap();
-                match color {
-                    "red" => r += num,
-                    "green" => g += num,
-                    "blue" => b += num,
+                match color.as_bytes()[0] {
+                    b'r' => r += num,
+                    b'g' => g += num,
+                    b'b' => b += num,
                     _ => panic!("No color"),
                 }
             });
