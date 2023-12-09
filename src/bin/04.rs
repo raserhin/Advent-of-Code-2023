@@ -1,8 +1,7 @@
-
 #[warn(dead_code)]
 const fn get_num_lines() -> usize {
     let mut i = 0;
-    let mut lines = 0;
+    let mut lines = 1;
     while i < INPUT.as_bytes().len() {
         if INPUT.as_bytes()[i] == b'\n' {
             lines += 1
@@ -49,30 +48,28 @@ fn part1(input: &str) -> u32 {
 
 fn part2(input: &str) -> u32 {
     const L: usize = get_num_lines();
-    let copies: [u32; L] = [0; L];
-    let a: u32 = input
-        .lines()
-        .enumerate()
-        .map(|(card_id, line)| {
-            let card_id = card_id + 1;
-            let (_card, content) = line.split_once(':').expect("at least one :");
-            let (winning, owned) = content.split_once('|').expect("Should have |");
-            let mut win_values = [0u8; 10];
-            winning
-                .split_ascii_whitespace()
-                .map(|a| a.parse::<u8>().expect("expected number"))
-                .enumerate()
-                .for_each(|(i, v)| win_values[i] = v);
-            match owned
-                .split_ascii_whitespace()
-                .map(|num| num.parse::<u8>().unwrap())
-                .filter(|val| win_values.contains(val))
-                .count()
-            {
-                0 => 0,
-                val => 2u32.pow(val as u32 - 1),
-            }
-        })
-        .sum();
-    1
+    let mut copies: [u32; L] = [1; L];
+    dbg!(L);
+    input.lines().enumerate().for_each(|(card_id, line)| {
+        let (_card, content) = line.split_once(':').expect("at least one :");
+        let (winning, owned) = content.split_once('|').expect("Should have |");
+        let win_bitmask = winning
+            .split_ascii_whitespace()
+            .map(parse)
+            .fold(0u128, |bitmask, v| bitmask | (1 << v));
+
+        let matches = owned
+            .split_ascii_whitespace()
+            .map(parse)
+            .filter(|val| win_bitmask & (1 << val) != 0)
+            .count();
+
+        let current_vale = copies[card_id];
+
+        copies[card_id + 1..L.min(card_id + matches + 1)]
+            .iter_mut()
+            .for_each(|val| *val += current_vale);
+    });
+
+    copies.iter().sum()
 }
