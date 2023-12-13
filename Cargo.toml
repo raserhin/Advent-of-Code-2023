@@ -16,4 +16,3 @@ overflow-checks = false
 itertools = "0.10"
 syn = { version = "1.0", features = ["full"] }
 quote = "1.0"
-regex = "1.10.2"
